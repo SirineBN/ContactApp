@@ -1,20 +1,18 @@
 package com.teamdev.syrinebennafkha.ui
 
-import com.teamdev.syrinebennafkha.R
-import com.teamdev.syrinebennafkha.data.ContactEntity
-
-
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
+import com.teamdev.syrinebennafkha.data.ContactEntity
+import com.teamdev.syrinebennafkha.databinding.ItemContactBinding
+import com.teamdev.syrinebennafkha.utils.ContactDiffCallback
+import java.util.Locale
 
-import java.util.*
-
-class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>(), Filterable {
+class ContactAdapter :
+    ListAdapter<ContactEntity, ContactAdapter.ContactViewHolder>(ContactDiffCallback()),
+    Filterable {
 
     private var contactList = listOf<ContactEntity>()
     private var contactListFiltered = listOf<ContactEntity>()
@@ -22,24 +20,21 @@ class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>(),
     fun setContacts(contacts: List<ContactEntity>) {
         contactList = contacts
         contactListFiltered = contacts
-        notifyDataSetChanged()
+        submitList(contactListFiltered)
     }
 
-    class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val name: TextView = view.findViewById(R.id.nameTextView)
-        val phone: TextView = view.findViewById(R.id.phoneTextView)
-    }
+    class ContactViewHolder(val binding: ItemContactBinding) :
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_contact, parent, false)
-        return ContactViewHolder(view)
+        val binding = ItemContactBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ContactViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         val contact = contactListFiltered[position]
-        holder.name.text = contact.name
-        holder.phone.text = contact.phoneNumber
+        holder.binding.nameTextView.text = contact.name
+        holder.binding.phoneTextView.text = contact.phoneNumber
     }
 
     override fun getItemCount(): Int = contactListFiltered.size
@@ -63,7 +58,7 @@ class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>(),
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 contactListFiltered = results?.values as List<ContactEntity>
-                notifyDataSetChanged()
+                submitList(contactListFiltered)
             }
         }
     }
