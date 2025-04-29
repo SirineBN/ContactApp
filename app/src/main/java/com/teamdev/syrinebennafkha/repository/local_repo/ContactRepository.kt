@@ -2,7 +2,6 @@ package com.teamdev.syrinebennafkha.repository.local_repo
 
 
 import androidx.lifecycle.LiveData
-import com.teamdev.syrinebennafkha.data.ContactDao
 import com.teamdev.syrinebennafkha.data.ContactEntity
 
 

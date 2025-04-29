@@ -1,8 +1,9 @@
-package com.teamdev.syrinebennafkha.data
+package com.teamdev.syrinebennafkha.repository.local_repo
 
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.teamdev.syrinebennafkha.data.ContactEntity
 
 @Dao
 interface ContactDao {

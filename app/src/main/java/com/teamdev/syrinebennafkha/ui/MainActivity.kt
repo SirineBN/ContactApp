@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.teamdev.syrinebennafkha.data.ContactEntity
 import com.teamdev.syrinebennafkha.databinding.ActivityMainBinding
 import com.teamdev.syrinebennafkha.utils.PermissionsHelper
+import com.teamdev.syrinebennafkha.utils.PermissionsHelper.REQUEST_CONTACTS_PERMISSION
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,9 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: ContactAdapter
     private val viewModel: ContactViewModel by viewModels()
 
-    companion object {
-        private const val REQUEST_CONTACTS_PERMISSION = 1
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,10 +1,11 @@
-package com.teamdev.syrinebennafkha.data
+package com.teamdev.syrinebennafkha.repository.local_repo
 
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.teamdev.syrinebennafkha.data.ContactEntity
 
 @Database(entities = [ContactEntity::class], version = 1)
 abstract class ContactDatabase : RoomDatabase() {

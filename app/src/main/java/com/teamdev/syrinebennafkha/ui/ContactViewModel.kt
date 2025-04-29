@@ -6,7 +6,7 @@ import android.provider.ContactsContract
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.teamdev.syrinebennafkha.data.ContactDatabase
+import com.teamdev.syrinebennafkha.repository.local_repo.ContactDatabase
 import com.teamdev.syrinebennafkha.data.ContactEntity
 import com.teamdev.syrinebennafkha.repository.local_repo.ContactRepository
 import kotlinx.coroutines.Dispatchers

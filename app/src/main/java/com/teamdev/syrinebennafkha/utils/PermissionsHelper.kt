@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 object PermissionsHelper {
+    const val REQUEST_CONTACTS_PERMISSION = 1
 
     fun hasPermission(activity: Activity, permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
@@ -22,4 +23,6 @@ object PermissionsHelper {
             requestCode
         )
     }
+
 }
+
