@@ -60,5 +60,6 @@ dependencies {
     testImplementation("junit:junit:4.14-SNAPSHOT")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
 }

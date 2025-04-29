@@ -1,4 +1,4 @@
-package com.teamdev.syrinebennafkha.repository
+package com.teamdev.syrinebennafkha.repository.local_repo
 
 
 import androidx.lifecycle.LiveData
