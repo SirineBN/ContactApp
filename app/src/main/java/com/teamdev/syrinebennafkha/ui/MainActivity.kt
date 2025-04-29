@@ -1,15 +1,13 @@
 package com.teamdev.syrinebennafkha.ui
 
 import android.Manifest
-import android.content.ContentResolver
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.widget.SearchView
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.teamdev.syrinebennafkha.data.ContactEntity
 import com.teamdev.syrinebennafkha.databinding.ActivityMainBinding
 import com.teamdev.syrinebennafkha.utils.PermissionsHelper
 import com.teamdev.syrinebennafkha.utils.PermissionsHelper.REQUEST_CONTACTS_PERMISSION
@@ -20,7 +18,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ContactAdapter
     private val viewModel: ContactViewModel by viewModels()
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,31 +38,36 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerViewContacts.adapter = adapter
     }
 
+
     private fun setupSearchView() {
-        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
+                adapter.filter(newText ?: "")
                 return true
             }
         })
     }
 
-
     private fun observeContacts() {
         viewModel.allContacts.observe(this) { contacts ->
+            adapter.setContacts(contacts)
+
             if (contacts.isEmpty()) {
-                binding.shimmerLayout.startShimmer()
+                binding.recyclerViewContacts.visibility = View.GONE
             } else {
-                binding.shimmerLayout.stopShimmer()
-                binding.shimmerLayout.hideShimmer()
-                adapter.setContacts(contacts)
+                binding.recyclerViewContacts.visibility = View.VISIBLE
             }
+
         }
     }
+
+
+
 
     private fun checkPermissionsAndLoadContacts() {
         if (PermissionsHelper.hasPermission(this, Manifest.permission.READ_CONTACTS)) {

@@ -6,8 +6,8 @@ import android.provider.ContactsContract
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.teamdev.syrinebennafkha.repository.local_repo.ContactDatabase
 import com.teamdev.syrinebennafkha.data.ContactEntity
+import com.teamdev.syrinebennafkha.repository.local_repo.ContactDatabase
 import com.teamdev.syrinebennafkha.repository.local_repo.ContactRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,18 +31,26 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
         repository.deleteAll()
     }
 
-    fun loadContactsFromPhone(contentResolver: ContentResolver) = viewModelScope.launch(Dispatchers.IO) {
-        val cursor = contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            null, null, null, null
-        )
+    fun loadContactsFromPhone(contentResolver: ContentResolver) =
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAll() // ✅ Vide la base avant de recharger
 
-        cursor?.use {
-            while (it.moveToNext()) {
-                val name = it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                val phone = it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                insert(ContactEntity(name = name, phoneNumber = phone))
+            val contacts = mutableListOf<ContactEntity>()
+
+            val cursor = contentResolver.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null, null, null, null
+            )
+
+            cursor?.use {
+                while (it.moveToNext()) {
+                    val name = it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                    val phone = it.getString(it.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                    contacts.add(ContactEntity(name = name, phoneNumber = phone))
+                }
             }
+
+            repository.insertAll(contacts) // ✅ Insert tous les contacts en une seule fois
         }
-    }
+
 }
